@@ -1,0 +1,163 @@
+1.show dbs
+2.use dbName
+3.show collections
+4.db.dropDatabase()
+   
+5.use dbName--create db
+6.db.createCollection('collName') //collName-- posts
+7.db.posts.insert({
+	title:"title1",
+	body:"body for title1",
+	category:"news",
+	likes:4,
+	tags:['news','events'],
+	user:{
+		name:"John doe",
+		status:"author"
+	},
+	date:Date()
+	
+})
+
+8. db.posts.insertMany([
+	{
+		title:"post2",
+		body:"body of post2",
+		category:"technology",
+		date:Date()
+	},
+	{
+		title:"post3",
+		body:"body of post3",
+		category:"technology",
+		date:Date()
+	},
+	{
+		title:"post4",
+		body:"body of post4",
+		category:"international",
+		date:Date()
+	}
+])
+
+9. db.posts.find()
+10.db.posts.find().pretty()
+11. db.posts.find({category:'technology'})
+12. db.posts.find().sort({title:1}).pretty() //+ve - ascending -ve - descending
+13. db.posts.find({category:'technology'}).count()
+14. db.posts.find().limit(2)
+15.db.posts.find().sort({title:-1}).limit(2).pretty() //descending
+16. db.posts.find().forEach(function(doc) {
+	print("Blog post "+doc.title)
+})
+17. db.posts.findOne({category:"technology"}) //finds only one
+18. db.posts.update({title:'post2'},
+{
+	title:"post2",
+	body:"new body of post2",
+	date:Date()
+},
+{
+	upsert:true
+}
+
+) //upsert- if the find value is not found, it inserts it -- update+insert
+
+19.db.posts.find({title:'post2'}).pretty() //category is gone
+
+20. db.posts.update({title:'post2'},
+{
+	$set:{
+		body:"patched body of post2",
+		category:"technology"
+	}
+}
+)
+
+//body alone gets updated and category will be added since it is not there
+
+db.posts.find({title:'post2'}).pretty()
+
+21. db.posts.update({title:'title1'},{$inc:{likes:2}})
+db.posts.find({title:'title1'}).pretty()
+
+22.db.posts.update({title:'title1'},
+{$rename: {likes:'views'}}
+)
+db.posts.find({title:'title1'}).pretty()
+
+23. db.posts.remove({title:'post4'})
+db.posts.find().pretty()
+
+24. db.posts.update({title:'post2'},
+{
+	$set:{
+		comments:[{
+			name: 'williams',
+			body:'comment one',
+			date: Date()
+		},
+		{
+		name: 'james',
+		body:'comment two',
+		date: Date()
+		}]
+	}
+}
+)
+
+db.posts.find().pretty()
+
+25. db.posts.find({
+	comments:{
+		$elemMatch: {
+		name:'williams'
+		}
+	}
+	
+}).pretty()
+
+
+26. db.posts.createIndex({ title: 'text'})
+
+27. db.posts.find({
+	$text:{
+		$search: "\"post\""
+	}
+}) //NOT WORKING
+
+28. db.posts.update({title:'post2'},{$set:{views:10}})
+
+29. db.posts.find({views: {$gt:3}}).pretty()
+30. db.posts.find({views: {$gte:6}}).pretty()
+31. db.posts.find({views: {$lte:6}}).pretty()
+32. db.posts.find({views: {$lt:6}}).pretty()
+
+
+33. db.createUser({
+	user:"brad",
+	pwd:"1234",
+	roles: ["readwrite","dbadmin"]
+	});
+	
+34. db.customers.update({first_name:"steven"},{$unset:{age:1}})
+35. db.customers.remove({first_name:"steven"},{justOne:true})
+36. db.customers.find({$or:[{first_name:"steven"},{first_name:"tryo"}]})
+37.db.customers.find({"address.city":"boston"})
+
+
+
+
+
+
+
+
+
+
+
+
+
+VideoLink: https://www.youtube.com/watch?v=-56x56UppqQ&t=1246s
+Commands: https://gist.github.com/bradtraversy/f407d642bdc3b31681bc7e56d95485b6
+
+
